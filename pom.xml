@@ -7,7 +7,7 @@
 
 	<groupId>50228d0d-2c1f-4548-9c8a-90c0ebb480b3</groupId>
 	<artifactId>pipeline-test</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>mule-application</packaging>
 
 	<name>pipeline-test</name>
