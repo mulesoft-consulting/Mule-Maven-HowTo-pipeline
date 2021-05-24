@@ -5,12 +5,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>my.group</groupId>
-	<artifactId>initial-project</artifactId>
+	<groupId>50228d0d-2c1f-4548-9c8a-90c0ebb480b3</groupId>
+	<artifactId>pipeline-test</artifactId>
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>${project.artifactId}</name>
+	<name>pipeline-test</name>
 
 	<properties>
 		<api.version>1.0.0</api.version>
