@@ -86,8 +86,8 @@ pipeline {
 	               projectArtifactId = pom.getArtifactId()
 			        
                     try {
-//withCredentials([sshUserPrivateKey(credentialsId: 'GIT_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USER')]) {
-                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GIT_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+                      //withCredentials([sshUserPrivateKey(credentialsId: 'GITHUB_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USERNAME')]) {
+                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
                         sh "${GIT} tag v${projectVersion}"
                         sh "${GIT} config credential.username ${env.GIT_USERNAME}" 
                         sh "${GIT} config credential.helper '!echo password=\$GIT_PASSWORD; echo'" 
