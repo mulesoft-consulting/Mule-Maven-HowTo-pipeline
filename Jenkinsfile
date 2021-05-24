@@ -29,7 +29,7 @@ pipeline {
 
     environment {
         ANYPOINT = credentials('ANYPOINT_PLATFORM_CREDENTIALS')
-        MULE_SETTINGS = '/home/ubuntu/settings/np-settings.xml'
+        MULE_SETTINGS = '/Users/pdunworth/Documents/Customers/Peter.Dunworth/blogs-stuff/np-settings.xml'
         MVN = 'mvn'
         GIT = 'git'
     }
@@ -54,7 +54,7 @@ pipeline {
 
         stage('Build and Test') {
             steps {
-                sh "${MVN} clean install -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} --settings ${MULE_SETTINGS}"
+                sh "${MVN} clean install -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
                 echo logSeparator
             }
         }
@@ -69,7 +69,7 @@ pipeline {
                     projectVersion = pom.getVersion()
                     projectArtifactId = pom.getArtifactId()
 					
-                    sh "${MVN} mule:deploy -Dmule.artifact=target/${projectArtifactId}-${projectVersion}-mule-application.jar -Pcloudhub -Ppublic-lb -Denv=dev -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} -DskipTests -Dch.workers=1 -Dch.workerType=MICRO --settings ${MULE_SETTINGS}"
+                    sh "${MVN} mule:deploy -Dmule.artifact=target/${projectArtifactId}-${projectVersion}-mule-application.jar -Pcloudhub -Ppublic-lb -Denv=dev -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' -DskipTests -Dch.workers=1 -Dch.workerType=MICRO --settings ${MULE_SETTINGS}"
                     echo logSeparator
 		}
             }
@@ -86,8 +86,8 @@ pipeline {
 	               projectArtifactId = pom.getArtifactId()
 			        
                     try {
-//withCredentials([sshUserPrivateKey(credentialsId: 'GIT_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USER')]) {
-                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GIT_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+                      withCredentials([sshUserPrivateKey(credentialsId: 'GITHUB_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USERNAME')]) {
+                      //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
                         sh "${GIT} tag v${projectVersion}"
                         sh "${GIT} config credential.username ${env.GIT_USERNAME}" 
                         sh "${GIT} config credential.helper '!echo password=\$GIT_PASSWORD; echo'" 
@@ -97,7 +97,7 @@ pipeline {
                         sh "${GIT} config --unset credential.username"
                         sh "${GIT} config --unset credential.helper"
                     }
-             		sh "${MVN} clean install deploy -Partifact-repo -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} --settings ${MULE_SETTINGS}"
+             		sh "${MVN} clean install deploy -Pexchange -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
                 }
                 echo logSeparator
             }
