@@ -54,7 +54,7 @@ pipeline {
 
         stage('Build and Test') {
             steps {
-                sh "${MVN} clean install -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} --settings ${MULE_SETTINGS}"
+                sh "${MVN} clean install -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
                 echo logSeparator
             }
         }
@@ -69,7 +69,7 @@ pipeline {
                     projectVersion = pom.getVersion()
                     projectArtifactId = pom.getArtifactId()
 					
-                    sh "${MVN} mule:deploy -Dmule.artifact=target/${projectArtifactId}-${projectVersion}-mule-application.jar -Pcloudhub -Ppublic-lb -Denv=dev -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} -DskipTests -Dch.workers=1 -Dch.workerType=MICRO --settings ${MULE_SETTINGS}"
+                    sh "${MVN} mule:deploy -Dmule.artifact=target/${projectArtifactId}-${projectVersion}-mule-application.jar -Pcloudhub -Ppublic-lb -Denv=dev -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' -DskipTests -Dch.workers=1 -Dch.workerType=MICRO --settings ${MULE_SETTINGS}"
                     echo logSeparator
 		}
             }
@@ -97,7 +97,7 @@ pipeline {
                         sh "${GIT} config --unset credential.username"
                         sh "${GIT} config --unset credential.helper"
                     }
-             		sh "${MVN} clean install deploy -Partifact-repo -Du=${ANYPOINT_USR} -Dp=${ANYPOINT_PSW} --settings ${MULE_SETTINGS}"
+             		sh "${MVN} clean install deploy -Partifact-repo -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
                 }
                 echo logSeparator
             }
