@@ -29,7 +29,7 @@ pipeline {
 
     environment {
         ANYPOINT = credentials('ANYPOINT_PLATFORM_CREDENTIALS')
-        MULE_SETTINGS = '/home/ubuntu/settings/np-settings.xml'
+        MULE_SETTINGS = '/Users/pdunworth/Documents/Customers/Peter.Dunworth/blogs-stuff/np-settings.xml'
         MVN = 'mvn'
         GIT = 'git'
     }
