@@ -97,7 +97,7 @@ pipeline {
                         sh "${GIT} config --unset credential.username"
                         sh "${GIT} config --unset credential.helper"
                     }
-             		sh "${MVN} clean install deploy -Partifact-repo -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
+             		sh "${MVN} clean install deploy -Pexchange -Du=${ANYPOINT_USR} -Dp='${ANYPOINT_PSW}' --settings ${MULE_SETTINGS}"
                 }
                 echo logSeparator
             }
