@@ -7,16 +7,20 @@ REQUIRES:
 - Standard Suggested Jenkins plugins
 - Pipeline Utility Steps
 
+YOU SHOULD CHANGE:
+- Change the MULE_SETTINGS environment variable
+- Change the GITHUB_SERVICE_ACCOUNT to the Jenkins Credential created for the Git repository
+- Change the -Denv=dev to the name of the environment to use for develop deployment
+- Change the -Pexchange to artifact-repo if the artifact is to be published to Exchange
+- Change -Dch.workers=1 to the number of workers to use
+- Change -Dch.workerType=MICRO to the size of worker to use (SMALL, MEDIUM, LARGE, etc)
+- Change MVN to the Maven program path to execute if mvn does not work on the server (typically the PATH variable is not set)
+- Change GIT to the GIT program path to execute if git does not work on the server (typically the PATH variable is not set)
+- If using a Deployment Model other than CloudHub, change the 'Deploy to CloudHub dev' deployment mvn command.
+
 """
 
 def logSeparator = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-def abort(String message)
-{
-    echo "Aborting pipeline..."
-    currentBuild.result = 'ABORTED'
-    error(message)
-}
 
 def log(String message)
 {
@@ -29,7 +33,7 @@ pipeline {
 
     environment {
         ANYPOINT = credentials('ANYPOINT_PLATFORM_CREDENTIALS')
-        MULE_SETTINGS = '/Users/pdunworth/Documents/Customers/Peter.Dunworth/blogs-stuff/np-settings.xml'
+        MULE_SETTINGS = '/opt/maven/settings/np-settings.xml'
         MVN = 'mvn'
         GIT = 'git'
     }
@@ -86,6 +90,7 @@ pipeline {
 	               projectArtifactId = pom.getArtifactId()
 			        
                     try {
+//You will need to change the credential confguration to fit your specific installation. Two examples are shown below.
                       withCredentials([sshUserPrivateKey(credentialsId: 'GITHUB_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USERNAME')]) {
                       //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
                         sh "${GIT} tag v${projectVersion}"
