@@ -93,7 +93,7 @@ pipeline {
 //You will need to change the credential confguration to fit your specific installation. Two examples are shown below.
                       withCredentials([sshUserPrivateKey(credentialsId: 'GITHUB_SERVICE_ACCOUNT', keyFileVariable: 'GIT_KEY_FILE', passphraseVariable: 'GIT_PASSPHRASE', usernameVariable: 'GIT_USERNAME')]) {
                       //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'GITHUB_SERVICE_ACCOUNT', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-                        sh "${GIT} tag v${projectVersion}"
+                        sh "${GIT} tag ${projectVersion}"
                         sh "${GIT} config credential.username ${env.GIT_USERNAME}" 
                         sh "${GIT} config credential.helper '!echo password=\$GIT_PASSWORD; echo'" 
                         sh "GIT_ASKPASS=true ${git} push origin --tags"

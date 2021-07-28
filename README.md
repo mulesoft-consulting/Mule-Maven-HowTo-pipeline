@@ -89,3 +89,4 @@ The deployment command can also include the option **-Pdlb** can be used to forc
 Or the option **-Ppublic-lb** can be used to force deployment to CloudHub using the public ports (8081 and 8082)
 
 By default, -Ppublic-lb is used.
+
